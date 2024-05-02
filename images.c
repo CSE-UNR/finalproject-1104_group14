@@ -55,3 +55,31 @@ int main(){
 
 	return 0;
 }
+
+int menu(){
+	int choiceMenu;
+	
+	printf("**ERINSTAGRAM**\n");
+	printf("1: Load image\n");
+	printf("2: Display image\n");
+	printf("3: Edit image\n");
+	printf("0:Exit\n\n");
+	printf("Choose from one of the options above: ");
+	scanf("%d", &choice);
+	
+	return choiceMenu;
+}
+
+int editMenu(){
+	int choiceEdit;
+	
+	printf("**EDITING**\n");
+	printf("1: Crop image\n");
+	printf("2: Dim image\n");
+	printf("3: Brighten image\n");
+	printf("0: Return to main menu\n");
+	printf("Choose from one of the options above: ");
+	scanf("%d", &choiceEdit);
+	
+	return choice;
+}
