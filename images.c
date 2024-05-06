@@ -7,6 +7,7 @@
 
 int menu();
 int editMenu();
+void load();
 void display(int imageArray);
 int crop(int imageArray);
 int dim(int imageArray);
@@ -82,4 +83,18 @@ int editMenu(){
 	scanf("%d", &choiceEdit);
 	
 	return choice;
+}
+
+void load(){
+	char fileName[100];
+	FILE* file;
+	
+	printf("What is the name of the image file? ")
+	scanf(" %s", fileName);
+	file = fopen(fileName, "r");
+	if (file == NULL){
+		printf("Could not find an image with that filename.\n");
+	}
+	else{
+		printf("Image successfully loaded!");
 }
