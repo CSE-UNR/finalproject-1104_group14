@@ -9,12 +9,12 @@
 
 int menu();
 int editMenu();
-void load(int inputRows, int inputCols, char arrayPTR[][inputCols], int *outputRows, int *outputCols);
-int crop(char imageArray);
-int dim(char imageArray);
-int brighten(char imageArray);
+void load(int inputRows, int inputCols, char arrayInput[][inputCols], int *outputRows, int *outputCols);
+void crop(char imageArray);
+void dim(int inputRows, int inputCols, char arrayInput[][inputCols]);
+void brighten(int inputRows, int inputCols, char arrayInput[][inputCols]);
 int rotate(char imageArray);
-// save function
+void save();
 
 int main(){
 	char imageArray[MAX_ROWS][MAX_COLS];
@@ -55,6 +55,12 @@ int main(){
 				} else {
 					editChoice = editMenu();
 					switch(editChoice){
+						case 2:
+							dim(rows, cols, imageArray);
+							break;
+						case 3:
+							brighten(rows, cols, imageArray);
+							break;
 					}
 				}
 				//save();
@@ -101,7 +107,7 @@ int editMenu(){
 	return choiceEdit;
 }
 
-void load(int inputRows, int inputCols, char arrayPTR[][inputCols], int *outputRows, int *outputCols){
+void load(int inputRows, int inputCols, char arrayInput[][inputCols], int *outputRows, int *outputCols){
 	char fileName[100];
 	FILE* file;
 	
@@ -120,15 +126,15 @@ void load(int inputRows, int inputCols, char arrayPTR[][inputCols], int *outputR
     	
     	while (row < inputRows && (last_char = fgetc(file)) != -1) { 
         	if (last_char == '\n') {
-            		arrayPTR[row][col] = '\0';
+            		arrayInput[row][col] = '\0';
             		row++;
             		col = 0;
             	} else if (col < inputCols - 1) {
-            		arrayPTR[row][col++] = last_char;
+            		arrayInput[row][col++] = last_char;
         	}
     	}
     	if (col > 0) {  
-        	arrayPTR[row][col] = '\0';
+        	arrayInput[row][col] = '\0';
     	}
     	row++;
     	*outputRows = row;
@@ -136,4 +142,60 @@ void load(int inputRows, int inputCols, char arrayPTR[][inputCols], int *outputR
     	fclose(file);
 }
 
+void dim(int inputRows, int inputCols, char arrayInput[][inputCols]){
+	for (int i = 0; i < inputRows; i++) {
+    		for (int j = 0; j <= inputCols; j++) {
+    			switch(arrayInput[i][j]){
+    				case '1':
+        				arrayInput[i][j] = '0';
+        				break;
+        			case '2':
+        				arrayInput[i][j] = '1';
+        				break;
+        			case '3':
+        				arrayInput[i][j] = '2';
+        				break;
+        			case '4':
+        				arrayInput[i][j] = '3';
+        				break;
+    			}
+    		}
+	}
+	for (int i = 0; i < inputRows; i++) {
+    		for (int j = 0; j <= inputCols; j++) {
+        		if(arrayInput[i][j] == '0'){
+        			printf(" ");
+        		} else if (arrayInput[i][j] == '1'){
+        			printf(".");
+       			} else if (arrayInput[i][j] == '2'){
+        			printf("o");
+        		} else if (arrayInput[i][j] == '3'){
+        			printf("O");
+        		} else if (arrayInput[i][j] == '4'){
+        			printf("0");
+        		}
+    		}
+    		printf("\n");
+	}
+}
 
+void brighten(int inputRows, int inputCols, char arrayInput[][inputCols]){
+	for (int i = 0; i < inputRows; i++) {
+    		for (int j = 0; j <= inputCols; j++) {
+    			switch(arrayInput[i][j]){
+    				case '0':
+        				arrayInput[i][j] = '1';
+        				break;
+        			case '1':
+        				arrayInput[i][j] = '2';
+        				break;
+        			case '2':
+        				arrayInput[i][j] = '3';
+        				break;
+        			case '3':
+        				arrayInput[i][j] = '4';
+        				break;
+    			}
+    		}
+	}	
+}
