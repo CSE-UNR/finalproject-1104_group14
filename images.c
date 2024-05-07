@@ -11,10 +11,10 @@ int menu();
 int editMenu();
 void load(int inputRows, int inputCols, char arrayInput[][inputCols], int *outputRows, int *outputCols);
 void crop(char imageArray);
-void dim(int inputRows, int inputCols, char arrayInput[][inputCols]);
-void brighten(int inputRows, int inputCols, char arrayInput[][inputCols]);
+char dim(char inputValue);
+char brighten(char inputValue);
 int rotate(char imageArray);
-void save();
+void save(int inputRows, int inputCols, char arrayInput[][inputCols]);
 
 int main(){
 	char imageArray[MAX_ROWS][MAX_COLS];
@@ -52,18 +52,31 @@ int main(){
 			case 3:
 				if(fileLoaded == 0){
 					printf("Error: Image not loaded.\n");
-				} else {
+				} else if (fileLoaded == 1) {
 					editChoice = editMenu();
 					switch(editChoice){
 						case 2:
-							dim(rows, cols, imageArray);
+							for (int i = 0; i < rows; i++) {
+    								for (int j = 0; j < cols; j++) {
+        								if(imageArray[i][j] != '0'){
+        									imageArray[i][j] = dim(imageArray[i][j]);
+        								}
+    								}
+							}
 							break;
 						case 3:
-							brighten(rows, cols, imageArray);
+							for (int i = 0; i < rows; i++) {
+    								for (int j = 0; j < cols; j++) {
+        								if(imageArray[i][j] != '4'){
+        									imageArray[i][j] = brighten(imageArray[i][j]);
+        								}
+    								}
+							}
+							break;
 							break;
 					}
 				}
-				//save();
+				//save(rows, cols, imageArray);
 				break;
 			case 0:
 				printf("Goodbye!\n\n");
@@ -126,76 +139,51 @@ void load(int inputRows, int inputCols, char arrayInput[][inputCols], int *outpu
     	
     	while (row < inputRows && (last_char = fgetc(file)) != -1) { 
         	if (last_char == '\n') {
-            		arrayInput[row][col] = '\0';
             		row++;
             		col = 0;
             	} else if (col < inputCols - 1) {
             		arrayInput[row][col++] = last_char;
         	}
     	}
-    	if (col > 0) {  
-        	arrayInput[row][col] = '\0';
-    	}
-    	row++;
     	*outputRows = row;
     	*outputCols = col;
     	fclose(file);
 }
 
-void dim(int inputRows, int inputCols, char arrayInput[][inputCols]){
-	for (int i = 0; i < inputRows; i++) {
-    		for (int j = 0; j <= inputCols; j++) {
-    			switch(arrayInput[i][j]){
-    				case '1':
-        				arrayInput[i][j] = '0';
-        				break;
-        			case '2':
-        				arrayInput[i][j] = '1';
-        				break;
-        			case '3':
-        				arrayInput[i][j] = '2';
-        				break;
-        			case '4':
-        				arrayInput[i][j] = '3';
-        				break;
-    			}
-    		}
+char dim(char inputValue){
+	char outputValue;
+	switch(inputValue){
+		case '4':
+			outputValue = '3';
+			break;
+		case '3':
+			outputValue = '2';
+			break;
+		case '2':
+			outputValue = '1';
+			break;
+		case '1':
+			outputValue = '0';
+			break;
 	}
-	for (int i = 0; i < inputRows; i++) {
-    		for (int j = 0; j <= inputCols; j++) {
-        		if(arrayInput[i][j] == '0'){
-        			printf(" ");
-        		} else if (arrayInput[i][j] == '1'){
-        			printf(".");
-       			} else if (arrayInput[i][j] == '2'){
-        			printf("o");
-        		} else if (arrayInput[i][j] == '3'){
-        			printf("O");
-        		} else if (arrayInput[i][j] == '4'){
-        			printf("0");
-        		}
-    		}
-    		printf("\n");
-	}
+	return outputValue;
 }
 
-void brighten(int inputRows, int inputCols, char arrayInput[][inputCols]){
-	for (int i = 0; i < inputRows; i++) {
-    		for (int j = 0; j <= inputCols; j++) {
-    			switch(arrayInput[i][j]){
-    				case '0':
-        				arrayInput[i][j] = '1';
-        				break;
-        			case '1':
-        				arrayInput[i][j] = '2';
-        				break;
-        			case '2':
-        				arrayInput[i][j] = '3';
-        				break;
-        			case '3':
-        				arrayInput[i][j] = '4';
-        				break;
-    			}
-    		}
-	}	
+char brighten(char inputValue){
+	char outputValue;
+	switch(inputValue){
+		case '0':
+			outputValue = '1';
+			break;
+		case '1':
+			outputValue = '2';
+			break;
+		case '2':
+			outputValue = '3';
+			break;
+		case '3':
+			outputValue = '4';
+			break;
+	}
+	return outputValue;
 }
